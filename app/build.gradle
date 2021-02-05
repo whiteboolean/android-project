@@ -17,7 +17,10 @@ android {
         versionCode rootProject.ext.android["versionCode"]
         versionName rootProject.ext.android["versionName"]
         testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
+
 
     buildTypes {
         debug {
@@ -40,6 +43,25 @@ android {
         disable "ResourceType"
         abortOnError false
     }
+
+    dexOptions {
+        javaMaxHeapSize "4g"
+        jumboMode = true
+        preDexLibraries = false
+        additionalParameters = [
+                '--multi-dex',//多分包
+                '--set-max-idx-number=60000'//每个包内方法数上限
+        ]
+    }
+
+    dataBinding{
+        enabled true
+    }
+
+    viewBinding{
+        enabled true
+    }
+
 }
 
 dependencies {
@@ -49,6 +71,8 @@ dependencies {
     implementation rootProject.ext.dependencies["cardview"]
     //腾讯UI库
     implementation rootProject.ext.dependencies["qmuiteam"]
+    //support:multidex 分包
+    implementation rootProject.ext.dependencies["multidex"]
 
     //tools
     //注意 Arms 核心库现在并不会依赖某个 EventBus, 要想使用 EventBus, 还请在项目中自行依赖对应的 EventBus
